@@ -1,9 +1,15 @@
 package main
 
 import (
+	"go_api_server/config"
 	"go_api_server/dao"
 	"go_api_server/routers"
+	"log"
 )
+
+func init() {
+	config.Setup()
+}
 
 func main() {
 	err := dao.InitMySQL()
@@ -11,7 +17,7 @@ func main() {
 		panic(err)
 	}
 	defer dao.Close()
-	// dao.InitModel()
 	r := routers.SetupRouter()
+	log.Print("http server %s starting...", config.AppConfig.AppName)
 	r.Run()
 }
